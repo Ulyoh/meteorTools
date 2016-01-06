@@ -1,0 +1,1 @@
+{"version":3,"sources":["/tools/packaging/package-version-parser.js"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,GAAG,OAAO,CAAC,iEAAiE,CAAC,CAAC","file":"tools/packaging/package-version-parser.js.map","sourcesContent":["module.exports = require('../../packages/package-version-parser/package-version-parser.js');\n"]}

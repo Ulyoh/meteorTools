@@ -1,0 +1,1 @@
+{"version":3,"sources":["/tools/index.js"],"names":[],"mappings":";AACA,OAAO,CAAC,6BAA6B,CAAC,CAAC;;;AAGvC,OAAO,CAAC,eAAe,CAAC,CAAC","file":"tools/index.js.map","sourcesContent":["// Set up the Babel transpiler\nrequire('./tool-env/install-babel.js');\n\n// Run the Meteor command line tool\nrequire('./cli/main.js');\n"]}

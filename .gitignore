@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+cli
+console
+cordova
+fs
+tests
+node_modules
+
