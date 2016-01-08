@@ -362,14 +362,15 @@ var File = (function () {
     if (this.url && (this.url.indexOf("ulyssey") > -1)){
       console.log("***-------------------------***");
       console.log("bundler.js L 364")
+      console.log("url: " + this.url)
       console.log("file.onDemand: " + this.onDemand);
 
       console.log("file.cacheable: " + this.cacheable);
-      //console.log("file: ");
-      //console.log(file);
+      //console.log("type: ");
+      //console.log(type);
       console.log("*************   STACK   **************")
 
-      console.trace();
+      //console.trace();
 
     }
     /////////////////////////////
@@ -537,10 +538,58 @@ var Target = (function () {
       // Link JavaScript and set up this.js, etc.
       _this._emitResources(sourceBatches);
 
+      /////******/////////////////////////////////////
+      //console.log(sourceBatches);
+      //(sourceBatch.unibuild.pkg.name.indexOf("ulyssey")> -1 ))
+      if (sourceBatches){
+        sourceBatches.forEach(function (element, index, array) {
+          if(element.unibuild.pkg &&  element.unibuild.pkg.name &&
+            (element.unibuild.pkg.name.indexOf("ulyssey") > -1)){
+            console.log("bundler.js L 555 *********---------------------------------------*******************");
+            console.log("element.unibuild.pkg.onDemand: " + element.unibuild.pkg.onDemand);
+            //console.log(element.unibuild);
+          }
+        });
+      }
+      /////******/////////////////////////////////////
+      if (_this.js){
+        _this.js.forEach(function (element, index, array) {
+          if(element.url && (element.url.indexOf("ulyssey") > -1)){
+            console.log("bundler.js L 558 *********---------------------------*******************");
+
+            console.log("url: " + element.url);
+            console.log("onDemand " + element.onDemand);
+            //console.log(element);
+          }
+        });
+      }
+      if (this.js){
+        this.js.forEach(function (element, index, array) {
+          if(element.url && (element.url.indexOf("ulyssey") > -1)){
+            console.log("bundler.js L 567 *********---------------------------*******************");
+            console.log("url: " + element.url);
+            console.log("onDemand " + element.onDemand);
+            //console.log(element);
+          }
+        });
+      }
+      /////*/
       // Add top-level Cordova dependencies, which override Cordova
       // dependencies from packages.
       _this._addDirectCordovaDependencies();
+      if (_this.js){
+        _this.js.forEach(function (element, index, array) {
+          if(element.url && (element.url.indexOf("ulyssey") > -1)){
+            console.log("bundler.js L 580 *********---------------------------*******************");
 
+            console.log("url: " + element.url);
+            console.log("onDemand " + element.onDemand);
+
+            console.log(" *********---------------------------*******************");
+            //console.log(element);
+          }
+        });
+      }
       // Minify, with mode requested.
       // Why do we only minify in client targets?
       // (a) CSS only exists in client targets, so we definitely shouldn't
@@ -562,23 +611,103 @@ var Target = (function () {
             return minifier && _.contains(minifier.extensions, ext);
           });
         });
+        /////******/////////////////////////////////////
+        if (_this.js){
+          _this.js.forEach(function (element, index, array) {
+            if(element.url && (element.url.indexOf("ulyssey") > -1)){
+              console.log("bundler.js L 618 *********---------------------------*******************");
 
+              console.log("url: " + element.url);
+              console.log("onDemand " + element.onDemand);
+
+              console.log(" *********---------------------------*******************");
+              //console.log(element);
+            }
+          });
+        }
         if (minifiersByExt.js) {
           _this.minifyJs(minifiersByExt.js, minifyMode);
         }
+        /////******/////////////////////////////////////
+        if (_this.js){
+          _this.js.forEach(function (element, index, array) {
+            if(element.url && (element.url.indexOf("ulyssey") > -1)){
+              console.log("bundler.js L 635 *********---------------------------*******************");
+
+              console.log("url: " + element.url);
+              console.log("onDemand " + element.onDemand);
+
+              console.log(" *********---------------------------*******************");
+              //console.log(element);
+            }
+          });
+        }
+        /////***////
         if (minifiersByExt.css) {
           _this.minifyCss(minifiersByExt.css, minifyMode);
         }
       }
+      /////******/////////////////////////////////////
+      if (_this.js){
+        _this.js.forEach(function (element, index, array) {
+          if(element.url && (element.url.indexOf("ulyssey") > -1)){
+            console.log("bundler.js L 614 *********---------------------------*******************");
 
+            console.log("url: " + element.url);
+            console.log("onDemand " + element.onDemand);
+
+            console.log(" *********---------------------------*******************");
+            //console.log(element);
+          }
+        });
+      }
       _this.rewriteSourceMaps();
+      /////******/////////////////////////////////////
+      if (_this.js){
+        _this.js.forEach(function (element, index, array) {
+          if(element.url && (element.url.indexOf("ulyssey") > -1)){
+            console.log("bundler.js L 629 *********---------------------------*******************");
 
+            console.log("url: " + element.url);
+            console.log("onDemand " + element.onDemand);
+
+            console.log(" *********---------------------------*******************");
+            //console.log(element);
+          }
+        });
+      }
       if (addCacheBusters) {
         // Make client-side CSS and JS assets cacheable forever, by
         // adding a query string with a cache-busting hash.
         _this._addCacheBusters("js");
+        console.log("---------------------------------------------JS done------------------------------");
         _this._addCacheBusters("css");
       }
+      /////******/////////////////////////////////////
+      if (_this.js){
+        _this.js.forEach(function (element, index, array) {
+          if(element.url && (element.url.indexOf("ulyssey") > -1)){
+            console.log("bundler.js L 624 *********---------------------------*******************");
+
+            console.log("url: " + element.url);
+            console.log("onDemand " + element.onDemand);
+
+            console.log(" *********---------------------------*******************");
+            //console.log(element);
+          }
+        });
+      }
+      if (this.js){
+        this.js.forEach(function (element, index, array) {
+          if(element.url && (element.url.indexOf("ulyssey") > -1)){
+            console.log("bundler.js L 635 *********---------------------------*******************");
+            console.log("url: " + element.url);
+            console.log("onDemand " + element.onDemand);
+            //console.log(element);
+          }
+        });
+      }
+      /////*/
     });
   };
 
@@ -785,23 +914,24 @@ var Target = (function () {
       resources.forEach(function (resource) {
 
         ///****///////////////////////////////
-        /*if(sourceBatch.unibuild  &&
+        if(sourceBatch.unibuild  &&
           (sourceBatch.unibuild.pkg) &&
           sourceBatch.unibuild.pkg.name &&
           (sourceBatch.unibuild.pkg.name.indexOf("ulyssey")> -1 )){
           console.log("------*******------******------*****------");
           console.log("bundler.js L774");
-          console.log("resource: " + Object.getOwnPropertyNames(resource));
-          console.log( '\n');
+          //console.log("resource: " + Object.getOwnPropertyNames(resource));
+          console.log("resource.servePath" + resource.servePath);
+          console.log( "onDemand: " + onDemand);
           console.log("------*******------******------*****------");
           ///////////////////////////////////
-          resourceLight = _.clone(resource);
+          /*resourceLight = _.clone(resource);
           resourceLight.data = '';
           resourceLight.sourceMap && (resourceLight.sourceMap.mappings = '');
           resourceLight.sourceMap && (resourceLight.sourceMap.sourcesContent = '');
 
           console.log(resourceLight);
-          //console.log(resource.sourceMap.sourcesContent);
+          //console.log(resource.sourceMap.sourcesContent);*/
         }
         ///*****///////////////////////////////*/
         if (resource.type !== 'asset') return;
@@ -845,6 +975,7 @@ var Target = (function () {
             console.log("bundler.js L 845")
             console.log("onDemand: " + onDemand);
             console.log("isweb:" + isWeb);
+            console.log("resource.servePath" + resource.servePath);
             //console.log("file.cacheable: " + file.cacheable);
             //console.log("file: ");
             //console.log(file);
@@ -871,6 +1002,7 @@ var Target = (function () {
             console.log("onDemand: " + onDemand);
             console.log("cacheable: " + f.cacheable);
             console.log("isweb:" + isWeb);
+            console.log("resource.servePath" + resource.servePath);
             //console.log("file.cacheable: " + file.cacheable);
             //console.log("file: ");
             //console.log(file);
@@ -941,6 +1073,29 @@ var Target = (function () {
         throw new Error('Unknown type ' + resource.type);
       });
 
+
+      /////******/////////////////////////////////////
+      if (_this3.js){
+        _this3.js.forEach(function (element, index, array) {
+          if(element.servePath && (servePath.indexOf("ulyssey") > -1)){
+          //  console.log(element);
+          }
+        });
+      }
+
+      /*if (resource.servePath.indexOf("ulyssey") > -1){
+        console.log("***-------------------------***");
+        console.log("bundler.js L 870")
+        console.log("onDemand: " + onDemand);
+        console.log("cacheable: " + f.cacheable);
+        console.log("isweb:" + isWeb);
+        //console.log("file.cacheable: " + file.cacheable);
+        //console.log("file: ");
+        //console.log(file);
+      }
+      /////////////////////////////*/
+
+
       // Depend on the source files that produced these resources.
       _this3.watchSet.merge(unibuild.watchSet);
 
@@ -962,7 +1117,48 @@ var Target = (function () {
         arch: this.arch
       });
     });
+    /////******/////////////////////////////////////
+    //console.log(sources);
+    if (sources){
+      sources.forEach(function (element, index, array) {
+        if(element._source.url && (element._source.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1125 *********---------------------------*******************");
+
+          console.log("url: " + element._source.url);
+          console.log("onDemand " + element._source.onDemand);
+
+          console.log(" *********---------------------------*******************");
+          console.log(element._minifiedFiles);
+        }
+      });
+    }
+
+/////******/////////////////////////////////////
     var minifier = minifierDef.userPlugin.processFilesForBundle.bind(minifierDef.userPlugin);
+
+
+/////******/////////////////////////////////////
+    //console.log(sources);
+    if (sources){
+      sources.forEach(function (element, index, array) {
+        if(element._source.url && (element._source.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1128 *********---------------------------*******************");
+
+          console.log("url: " + element._source.url);
+          console.log("onDemand " + element._source.onDemand);
+
+
+          console.log("element._minifiedFiles");
+          console.log(element._minifiedFiles);
+
+          console.log("minifier:");
+          console.log(minifier);
+          console.log(" *********---------------------------*******************");
+        }
+      });
+    }
+    ////***////
+
 
     buildmessage.enterJob('minifying app code', function () {
       try {
@@ -972,8 +1168,54 @@ var Target = (function () {
         buildmessage.exception(e);
       }
     });
+/////******/////////////////////////////////////
+    //console.log(sources);
+    if (sources){
+      sources.forEach(function (element, index, array) {
+        if(element._source.url && (element._source.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1171 *********---------------------------*******************");
 
+          console.log("url: " + element._source.url);
+          console.log("onDemand " + element._source.onDemand);
+
+          console.log("element._minifiedFiles");
+          console.log(element._minifiedFiles);
+          console.log(" *********---------------------------*******************");
+        }
+      });
+    }
+    ////***////
+    if (sources){
+      sources.forEach(function (element, index, array) {
+        if(element._source.url && (element._source.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1179 *********---------------------------*******************");
+
+          console.log("url: " + element._source.url);
+          console.log("onDemand " + element._source.onDemand);
+
+          console.log("element._minifiedFiles");
+          console.log(element._minifiedFiles);
+          console.log(" *********---------------------------*******************");
+        }
+      });
+    }
+    var myThis = this;
+    /////***////
     this.js = _.flatten(sources.map(function (source) {
+      ///////////*****************//////////////////////
+      //console.log(source);
+      if(source._source.url && (source._source.url.indexOf("ulyssey") > -1)){
+        console.log("bundler.js L 1194 *********---------------------------****************-------------------------------------------------------***");
+
+        console.log("url: " + source._source.url);
+        console.log("onDemand " + source._source.onDemand);
+
+        console.log(" *********---------------------------*******************");
+        console.log("source._minifiedFiles");
+        console.log(source._minifiedFiles);
+
+      }
+      /////*****/////////
       return source._minifiedFiles.map(function (file) {
         var newFile = new File({
           info: 'minified js',
@@ -994,6 +1236,23 @@ var Target = (function () {
         return newFile;
       });
     }));
+
+    /////******/////////////////////////////////////
+    if (this.js){
+      this.js.forEach(function (element, index, array) {
+        if(element.url && (element.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1218 *********---------------------------*******************");
+
+          console.log("url: " + element.url);
+          console.log("onDemand " + element.onDemand);
+
+          console.log(" *********---------------------------*******************");
+          //console.log(element);
+        }
+      });
+    }
+    /////***////
+
   };
 
   // For every source file we process, sets the domain name to
@@ -1196,7 +1455,15 @@ var ClientTarget = (function (_Target) {
     /////**********//////////////
    // console.log("bundler.js L1153");
     //console.log(_this8.js);
-
+    /////******/////////////////////////////////////
+    if (this.js){
+      this.js.forEach(function (element, index, array) {
+        if(element.url && (element.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1251 this *********---------------------------*******************");
+          console.log("onDemand: " + element.onDemand);
+        }
+      });
+    }
 
 
     /////////////////////////*/
@@ -1219,7 +1486,28 @@ var ClientTarget = (function (_Target) {
     });
 
     // Build up a manifest of all resources served via HTTP.
-    var manifest = [];
+    var manifest = []
+    /////******/////////////////////////////////////
+    if (this.js){
+      this.js.forEach(function (element, index, array) {
+        if(element.url && (element.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1278 this *********---------------------------*******************");
+          console.log("onDemand: " + element.onDemand);
+        }
+      });
+    }
+
+
+
+    /////******/////////////////////////////////////
+    if ((typeof _this8 !== 'undefined') && _this8.js){
+      _this8.js.forEach(function (element, index, array) {
+        if(element.url && (element.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1298 _this8 *********---------------------------*******************");
+          console.log("onDemand: " + element.onDemand);
+        }
+      });
+    }
     eachResource(function (file, type) {
       var fileContents = file.contents();
 
@@ -1292,6 +1580,27 @@ var ClientTarget = (function (_Target) {
         });
       }
     });
+
+    /////******/////////////////////////////////////
+    if (this.js){
+      this.js.forEach(function (element, index, array) {
+        if(element.url && (element.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1351 this *********---------------------------*******************");
+          console.log("onDemand: " + element.onDemand);
+        }
+      });
+    }
+
+    /////******/////////////////////////////////////
+    if ((typeof _this8 !== 'undefined') && _this8.js){
+      _this8.js.forEach(function (element, index, array) {
+        if(element.url && (element.url.indexOf("ulyssey") > -1)){
+          console.log("bundler.js L 1369 _this8 *********---------------------------*******************");
+          console.log("onDemand: " + element.onDemand);
+        }
+      });
+    }
+
 
     // Control file
     builder.writeJson('program.json', {
@@ -1587,6 +1896,8 @@ var JsImage = (function () {
       }
 
       loadItem.path = builder.writeToGeneratedFilename(item.targetPath, { data: new Buffer(item.source, 'utf8') });
+
+      loadItem.onDemand = !!item.onDemand;
 
       if (!_.isEmpty(item.assets)) {
         // For package code, static assets go inside a directory inside
