@@ -610,7 +610,7 @@ var Target = (function () {
           isopackCache: isopackCache,
           skipDebugOnly: this.buildMode !== 'development',
           skipProdOnly: this.buildMode !== 'production',
-          skipOnDemand: false, //Todo: is this useful?
+          skipOnDemand: false, //Todo: is this useful? if true: corresponding packages do not appear in the app's build folder
           allowWrongPlatform: this.providePackageJSONForUnavailableBinaryDeps
         }, addToGetsUsed);
       }).bind(_this2);
@@ -1141,6 +1141,14 @@ var ClientTarget = (function (_Target) {
     var manifest = [];
     eachResource(function (file, type) {
       var fileContents = file.contents();
+
+      /////******/////////////////////////////////////
+      if (file.targetPath.indexOf("ulyssey") > -1){
+        console.log("***-------------------------***");
+        console.log("bundler.js L1148")
+        console.log("file: " + file);
+      }
+      /////////////////////////////
 
       var manifestItem = {
         path: file.targetPath,

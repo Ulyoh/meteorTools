@@ -1182,7 +1182,7 @@ _.extend(Isopack.prototype, {
         }
         //////////////////////////////
         if (self.name && (self.name.indexOf("ulyssey") > -1)){
-          console.log("*************************************");
+          console.log("***************************************************************************");
           console.log("isopack.js: L1175")
           console.log("self.name: " + self.name);
           console.log("self.onDemand: " + self.onDemand);
@@ -1191,11 +1191,12 @@ _.extend(Isopack.prototype, {
         }
         /////////////////////////////
         if (self.onDemand) {
+          console.log("***************************************************************************");
           mainJson.onDemand = true;
         }
         //////////////////////////////
         if (self.name && (self.name.indexOf("ulyssey") > -1)){
-          console.log("*************************************");
+          console.log("***************************************************************************");
           console.log("isopack.js: L1188")
           console.log("self.name: " + mainJson.name);
           console.log("self.onDemand: " + mainJson.onDemand);
@@ -1562,6 +1563,21 @@ _.extend(Isopack.prototype, {
 
         isopackJson = {};
 
+        ///****///////////////////////////////
+        /*if((unibuild.pkg) &&
+          unibuild.pkg.name &&
+          (unibuild.pkg.name.indexOf("ulyssey")> -1 )){
+          console.log("****      ****        ****     ****")
+          console.log("isopack.js L1278");
+          console.log(unibuild);
+        }*/
+        if(mainJson.name.indexOf("ulyssey") > -1){
+          console.log("****      ****        ****     ****");
+          console.log("isopack.js L1574");
+          console.log(mainJson);
+        }
+        ///*****///////////////////////////////*/
+
         isopackJson['isopack-2'] = mainJson;
         if (writeLegacyBuilds) {
           isopackJson['isopack-1'] = mainLegacyJson;
@@ -1577,6 +1593,11 @@ _.extend(Isopack.prototype, {
         //   isopack-2: {... data ...}
         // }
         builder.writeJson("isopack.json", isopackJson);
+        if (isopackJson['isopack-2'] && isopackJson['isopack-2'].name &&
+          isopackJson['isopack-2'].name.indexOf('ulyssey') > -1) {
+            console.log("++++++++++++++5555555555555++++++++++++++");
+            console.log(isopackJson['isopack-2'].name);
+        }
 
         if (isopackBuildInfoJson) {
           builder.writeJson("isopack-buildinfo.json", isopackBuildInfoJson);
