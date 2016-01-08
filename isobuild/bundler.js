@@ -575,9 +575,6 @@ var Target = (function () {
         if (p.prodOnly && _this2.buildMode !== 'production') {
           return;
         }
-        if (p.onDemand) {
-          return;
-        }
         var unibuild = p.getUnibuildAtArch(_this2.arch, {
           allowWrongPlatform: _this2.providePackageJSONForUnavailableBinaryDeps
         });
