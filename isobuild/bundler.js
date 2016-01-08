@@ -225,6 +225,7 @@ var NodeModulesDirectory = function (options) {
 // - sourceMap: if 'data' is given, can be given instead of
 //   sourcePath. a string or a JS Object. Will be stored as Object.
 // - cacheable
+// - onDemand: true if Package.describe({'onDemand': true)
 
 var File = (function () {
   function File(options) {
@@ -260,6 +261,9 @@ var File = (function () {
     // Is this file guaranteed to never change, so that we can let it be
     // cached forever? Only makes sense of self.url is set.
     this.cacheable = options.cacheable || false;
+
+    //If the package is served on demand
+    this.onDemand = options.onDemand || false;
 
     // The node_modules directory that Npm.require() should search when
     // called from inside this file, given as a NodeModulesDirectory, or
@@ -326,6 +330,22 @@ var File = (function () {
     this.url = "/" + this.hash() + fileAndUrlSuffix + urlSuffix;
     this.cacheable = true;
     this.targetPath = this.hash() + fileAndUrlSuffix;
+
+    /////******/////////////////////////////////////
+    if (this.url && (this.url.indexOf("ulyssey") > -1)){
+      console.log("***-------------------------***");
+      console.log("bundler.js L 337")
+      console.log("file.onDemand: " + this.onDemand);
+
+      console.log("file.cacheable: " + this.cacheable);
+      //console.log("file: ");
+      //console.log(file);
+      console.log("*************   STACK   **************")
+
+      //console.trace();
+
+    }
+    /////////////////////////////
   };
 
   // Append "?<hash>" to the URL and mark the file as cacheable.
@@ -336,6 +356,23 @@ var File = (function () {
     if (/\?/.test(this.url)) throw new Error("URL already has a query string");
     this.url += "?" + this.hash();
     this.cacheable = true;
+
+
+    /////******/////////////////////////////////////
+    if (this.url && (this.url.indexOf("ulyssey") > -1)){
+      console.log("***-------------------------***");
+      console.log("bundler.js L 364")
+      console.log("file.onDemand: " + this.onDemand);
+
+      console.log("file.cacheable: " + this.cacheable);
+      //console.log("file: ");
+      //console.log(file);
+      console.log("*************   STACK   **************")
+
+      console.trace();
+
+    }
+    /////////////////////////////
   };
 
   // Given a relative path like 'a/b/c' (where '/' is this system's
@@ -669,7 +706,7 @@ var Target = (function () {
           acceptableWeakPackages: this.usedPackages,
           skipDebugOnly: this.buildMode !== 'development',
           skipProdOnly: this.buildMode !== 'production',
-          skipOnDemand: true, //Todo: is this useful?
+          skipOnDemand: false, //Todo: is this useful?
           allowWrongPlatform: this.providePackageJSONForUnavailableBinaryDeps
         }, processUnibuild);
         this.unibuilds.push(unibuild);
@@ -718,16 +755,12 @@ var Target = (function () {
     ////////////////////////////////
     // Copy their resources into the bundle in order
     sourceBatches.forEach(function (sourceBatch) {
-      ///****///////////////////////////////
-     /* if(sourceBatch.unibuild  &&
-        (sourceBatch.unibuild.pkg) &&
-        sourceBatch.unibuild.pkg.name &&
-        (sourceBatch.unibuild.pkg.name.indexOf("ulyssey")> -1 )){
-        console.log(sourceBatch);
-        console.log( '\n');
-      }*/
-      ///*****///////////////////////////////*/
+
       var unibuild = sourceBatch.unibuild;
+      //todo: is it the good level for onDemand parameter
+      //todo: js, css and html files for the client should be under the
+      //todo: same structure with a commun onDemand parameter
+      var onDemand = unibuild.pkg && unibuild.pkg.onDemand;
 
       if (_this3.cordovaDependencies) {
         _.each(unibuild.pkg.cordovaDependencies, function (version, name) {
@@ -750,21 +783,34 @@ var Target = (function () {
       //var resourceLight;
       /////////////////////////////////////
       resources.forEach(function (resource) {
-        ///////////////////////////////////
-        /*resourceLight = _.clone(resource);
-        resourceLight.data = '';
-        resourceLight.sourceMap && (resourceLight.sourceMap.mappings = '');
-        resourceLight.sourceMap && (resourceLight.sourceMap.sourcesContent = '');
 
-        console.log(resourceLight);*/
-        //console.log(resource.sourceMap.sourcesContent);
-        //////////////////////////////////
+        ///****///////////////////////////////
+        /*if(sourceBatch.unibuild  &&
+          (sourceBatch.unibuild.pkg) &&
+          sourceBatch.unibuild.pkg.name &&
+          (sourceBatch.unibuild.pkg.name.indexOf("ulyssey")> -1 )){
+          console.log("------*******------******------*****------");
+          console.log("bundler.js L774");
+          console.log("resource: " + Object.getOwnPropertyNames(resource));
+          console.log( '\n');
+          console.log("------*******------******------*****------");
+          ///////////////////////////////////
+          resourceLight = _.clone(resource);
+          resourceLight.data = '';
+          resourceLight.sourceMap && (resourceLight.sourceMap.mappings = '');
+          resourceLight.sourceMap && (resourceLight.sourceMap.sourcesContent = '');
+
+          console.log(resourceLight);
+          //console.log(resource.sourceMap.sourcesContent);
+        }
+        ///*****///////////////////////////////*/
         if (resource.type !== 'asset') return;
         var f = new File({
           info: 'unbuild ' + resource,
           data: resource.data,
           cacheable: false,
-          hash: resource.hash
+          hash: resource.hash,
+          onDemand: onDemand
         });
 
         var relPath = isOs ? files.pathJoin('assets', resource.servePath) : stripLeadingSlash(resource.servePath);
@@ -793,14 +839,43 @@ var Target = (function () {
             // meteor.js?
             return;
 
-          var f = new File({ info: 'resource ' + resource.servePath, data: resource.data, cacheable: false });
+          /////******/////////////////////////////////////
+          if (resource.servePath.indexOf("ulyssey") > -1){
+            console.log("***-------------------------***");
+            console.log("bundler.js L 845")
+            console.log("onDemand: " + onDemand);
+            console.log("isweb:" + isWeb);
+            //console.log("file.cacheable: " + file.cacheable);
+            //console.log("file: ");
+            //console.log(file);
+          }
+          /////////////////////////////*/
 
+          var f = new File({
+            info: 'resource ' + resource.servePath,
+            data: resource.data,
+            cacheable: false,
+            onDemand: onDemand
+          });
           var relPath = stripLeadingSlash(resource.servePath);
           f.setTargetPathFromRelPath(relPath);
 
           if (isWeb) {
             f.setUrlFromRelPath(resource.servePath);
           }
+
+          /////******/////////////////////////////////////
+          if (resource.servePath.indexOf("ulyssey") > -1){
+            console.log("***-------------------------***");
+            console.log("bundler.js L 870")
+            console.log("onDemand: " + onDemand);
+            console.log("cacheable: " + f.cacheable);
+            console.log("isweb:" + isWeb);
+            //console.log("file.cacheable: " + file.cacheable);
+            //console.log("file: ");
+            //console.log(file);
+          }
+          /////////////////////////////*/
 
           if (resource.type === 'js' && isOs) {
             // Hack, but otherwise we'll end up putting app assets on this file.
@@ -902,7 +977,8 @@ var Target = (function () {
       return source._minifiedFiles.map(function (file) {
         var newFile = new File({
           info: 'minified js',
-          data: new Buffer(file.data, 'utf8')
+          data: new Buffer(file.data, 'utf8'),
+          onDemand: file.onDemand
         });
         if (file.sourceMap) {
           newFile.setSourceMap(file.sourceMap, '/');
@@ -1035,7 +1111,6 @@ var Target = (function () {
 });
 
 //////////////////// ClientTarget ////////////////////
-
 var ClientTarget = (function (_Target) {
   babelHelpers.inherits(ClientTarget, _Target);
 
@@ -1084,7 +1159,8 @@ var ClientTarget = (function (_Target) {
       return source._minifiedFiles.map(function (file) {
         var newFile = new File({
           info: 'minified css',
-          data: new Buffer(file.data, 'utf8')
+          data: new Buffer(file.data, 'utf8'),
+          onDemand: file.onDemand
         });
         if (file.sourceMap) {
           newFile.setSourceMap(file.sourceMap, '/');
@@ -1117,6 +1193,14 @@ var ClientTarget = (function (_Target) {
 
     builder.reserve("program.json");
 
+    /////**********//////////////
+   // console.log("bundler.js L1153");
+    //console.log(_this8.js);
+
+
+
+    /////////////////////////*/
+
     // Helper to iterate over all resources that we serve over HTTP.
     var eachResource = (function (f) {
       var _this7 = this;
@@ -1139,22 +1223,25 @@ var ClientTarget = (function (_Target) {
     eachResource(function (file, type) {
       var fileContents = file.contents();
 
-      /////******/////////////////////////////////////
-      if (file.targetPath.indexOf("ulyssey") > -1){
-        console.log("***-------------------------***");
-        console.log("bundler.js L1148")
-        console.log("file: " + file);
-      }
-      /////////////////////////////
-
       var manifestItem = {
         path: file.targetPath,
         where: "client",
         type: type,
         cacheable: file.cacheable,
+        onDemand: file.onDemand,
         url: file.url
       };
+      /////******/////////////////////////////////////
+      if (file.targetPath.indexOf("ulyssey") > -1){
+        console.log("***-------------------------***");
+        console.log("bundler.js L 1212")
+        console.log("file.onDemand: " + file.onDemand);
 
+        console.log("file.cacheable: " + file.cacheable);
+        //console.log("file: ");
+        //console.log(file);
+      }
+      /////////////////////////////*/
       var antiXSSIPrepend = Profile("anti-XSSI header for source-maps", function (sourceMap) {
         // Add anti-XSSI header to this file which will be served over
         // HTTP. Note that the Mozilla and WebKit implementations differ as to
@@ -1670,7 +1757,8 @@ var JsImageTarget = (function (_Target2) {
         nodeModulesDirectory: file.nodeModulesDirectory,
         assets: file.assets,
         sourceMap: file.sourceMap,
-        sourceMapRoot: file.sourceMapRoot
+        sourceMapRoot: file.sourceMapRoot,
+        onDemand: file.onDemand //todo verify if usefull here
       });
     });
 
