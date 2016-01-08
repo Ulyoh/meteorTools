@@ -191,6 +191,18 @@ var getExcerptFromReadme = function (text) {
 var SourceArch = function (pkg, options) {
   var self = this;
   options = options || {};
+
+  ////****//////////////////////////
+  if (pkg.name && (pkg.name.indexOf("ulyssey") > -1)){
+    console.log("*************************************");
+    console.log("package-source.js: L196")
+    console.log("self.name: " + pkg.name);
+    console.log("self.onDemand: " + pkg.onDemand);
+    console.log("*************************************");
+    //console.trace();
+  }
+  /////////////////////////////
+
   self.pkg = pkg;
 
   // Kind of this sourceArchitecture. At the moment, there are really three
@@ -351,6 +363,9 @@ var PackageSource = function () {
   // builds.
   self.prodOnly = false;
 
+  //todo: comment
+  self.onDemand = false;
+
   // If this is set, we will take the currently running git checkout and bundle
   // the meteor tool from it inside this package as a tool. We will include
   // built copies of all known isopackets.
@@ -427,6 +442,17 @@ _.extend(PackageSource.prototype, {
       return source;
     });
 
+    ////****//////////////////////////
+    if (self.name && (self.name.indexOf("ulyssey") > -1)){
+      console.log("*************************************");
+      console.log("package-source.js: L448")
+      console.log("self.name: " + self.name);
+      console.log("self.onDemand: " + self.onDemand);
+      console.log("*************************************");
+      //console.trace();
+    }
+    /////////////////////////////
+
     var sourceArch = new SourceArch(self, {
       kind: options.kind,
       arch: "os",
@@ -437,6 +463,8 @@ _.extend(PackageSource.prototype, {
         };
       }
     });
+
+
 
     self.architectures.push(sourceArch);
 
@@ -553,6 +581,9 @@ _.extend(PackageSource.prototype, {
        * meant to be used in development only.
        * @param {Boolean} options.prodOnly A package with this flag set to true
        * will ONLY be bundled into production builds.
+       * @param {Boolean} options.onDemand A package with this flag set to true
+       * will not be imported for you. You have to access it using:
+       * `Package["my-package"].MySymbol`
        */
       describe: function (options) {
         _.each(options, function (value, key) {
@@ -593,20 +624,20 @@ _.extend(PackageSource.prototype, {
               // the name that we find inside. That's super weird.
               buildmessage.error("trying to initialize a nonexistent base package " + value);
             }
-            // `debugOnly` and `prodOnly` are boolean flags you can put on a
-            // package, currently undocumented.  when set to true, they cause
-            // a package's code to be only included (i.e. linked into the bundle)
-            // in dev mode or prod mode (`meteor --production`), and excluded
-            // otherwise.
+            // `debugOnly`, `prodOnly` and `onDemand` are boolean flags you can
+            // put on apackage, currently undocumented.  when set to true, they
+            // cause a package's code to be only included (i.e. linked into the
+            // bundle)in dev mode or prod mode (`meteor --production`), and
+            // excluded otherwise.
             //
             // Notes:
             //
             // * These flags do not affect which packages or which versions are
             //   are selected by the version solver.
             //
-            // * When you use a debugOnly or prodOnly package, its exports are
-            //   not imported for you.  You have to access them using
-            //   `Package["my-package"].MySymbol`.
+            // * When you use a debugOnly or prodOnly or `onDemand` package, its
+            //   exports are not imported for you.  You have to access them
+            //   using `Package["my-package"].MySymbol`.
             //
             // * These flags CAN cause different package load orders in
             //   development and production!  We should probably fix this.
@@ -618,9 +649,11 @@ _.extend(PackageSource.prototype, {
             //   are effectively part of the public API.
           } else if (key === "debugOnly") {
               self.debugOnly = !!value;
-            } else if (key === "prodOnly") {
-              self.prodOnly = !!value;
-            } else {
+          } else if (key === "prodOnly") {
+            self.prodOnly = !!value;
+          } else if (key === "onDemand") {
+            self.onDemand = !!value;
+          } else {
               // Do nothing. We might want to add some keys later, and we should err
               // on the side of backwards compatibility.
             }
@@ -628,6 +661,16 @@ _.extend(PackageSource.prototype, {
             buildmessage.error("Package can't have both debugOnly and prodOnly set.");
           }
         });
+        ////****//////////////////////////
+        if (self.name.indexOf("ulyssey") > -1){
+          console.log("*************************************");
+          console.log("package-source.js: L642")
+          console.log("self.name: " + self.name);
+          console.log("self.onDemand: " + self.onDemand);
+          console.log("*************************************");
+          //console.trace();
+        }
+        /////////////////////////////
       },
 
       /**
@@ -1150,6 +1193,17 @@ _.extend(PackageSource.prototype, {
       var watchSet = new watch.WatchSet();
       watchSet.addFile(packageJsPath, packageJsHash);
 
+      ////****//////////////////////////
+      if (self.name && (self.name.indexOf("ulyssey") > -1)){
+        console.log("*************************************");
+        console.log("package-source.js: L1199")
+        console.log("self.name: " + self.name);
+        console.log("self.onDemand: " + self.onDemand);
+        console.log("*************************************");
+        //console.trace();
+      }
+      /////////////////////////////
+
       self.architectures.push(new SourceArch(self, {
         kind: "main",
         arch: arch,
@@ -1203,6 +1257,16 @@ _.extend(PackageSource.prototype, {
       // XXX what about /web.browser/* etc, these directories could also
       // be for specific client targets.
 
+      ////****//////////////////////////
+      if (self.name && (self.name.indexOf("ulyssey") > -1)){
+        console.log("*************************************");
+        console.log("package-source.js: L1263")
+        console.log("self.name: " + self.name);
+        console.log("self.onDemand: " + self.onDemand);
+        console.log("*************************************");
+        //console.trace();
+      }
+      /////////////////////////////
       // Create unibuild
       var sourceArch = new SourceArch(self, {
         kind: 'app',

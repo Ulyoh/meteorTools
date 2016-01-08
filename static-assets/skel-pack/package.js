@@ -11,7 +11,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-~cc~  api.versionsFrom('~release~');
+  api.versionsFrom('~release~');
   api.use('ecmascript');
   api.addFiles('~fs-name~.js');
 });

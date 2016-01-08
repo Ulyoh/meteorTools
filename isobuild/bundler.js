@@ -575,6 +575,9 @@ var Target = (function () {
         if (p.prodOnly && _this2.buildMode !== 'production') {
           return;
         }
+        if (p.onDemand) {
+          return;
+        }
         var unibuild = p.getUnibuildAtArch(_this2.arch, {
           allowWrongPlatform: _this2.providePackageJSONForUnavailableBinaryDeps
         });
@@ -607,6 +610,7 @@ var Target = (function () {
           isopackCache: isopackCache,
           skipDebugOnly: this.buildMode !== 'development',
           skipProdOnly: this.buildMode !== 'production',
+          skipOnDemand: false, //Todo: is this useful?
           allowWrongPlatform: this.providePackageJSONForUnavailableBinaryDeps
         }, addToGetsUsed);
       }).bind(_this2);
@@ -668,6 +672,7 @@ var Target = (function () {
           acceptableWeakPackages: this.usedPackages,
           skipDebugOnly: this.buildMode !== 'development',
           skipProdOnly: this.buildMode !== 'production',
+          skipOnDemand: true, //Todo: is this useful?
           allowWrongPlatform: this.providePackageJSONForUnavailableBinaryDeps
         }, processUnibuild);
         this.unibuilds.push(unibuild);
@@ -711,8 +716,20 @@ var Target = (function () {
     var isWeb = archinfo.matches(this.arch, 'web');
     var isOs = archinfo.matches(this.arch, 'os');
 
+    /////////////////////////////////
+    //console.log(sourceBatches);
+    ////////////////////////////////
     // Copy their resources into the bundle in order
     sourceBatches.forEach(function (sourceBatch) {
+      ///****///////////////////////////////
+     /* if(sourceBatch.unibuild  &&
+        (sourceBatch.unibuild.pkg) &&
+        sourceBatch.unibuild.pkg.name &&
+        (sourceBatch.unibuild.pkg.name.indexOf("ulyssey")> -1 )){
+        console.log(sourceBatch);
+        console.log( '\n');
+      }*/
+      ///*****///////////////////////////////*/
       var unibuild = sourceBatch.unibuild;
 
       if (_this3.cordovaDependencies) {
@@ -731,9 +748,21 @@ var Target = (function () {
       // First, find all the assets, so that we can associate them with each js
       // resource (for os unibuilds).
       var unibuildAssets = {};
-      resources.forEach(function (resource) {
-        if (resource.type !== 'asset') return;
 
+      /////////////////////////////////////
+      //var resourceLight;
+      /////////////////////////////////////
+      resources.forEach(function (resource) {
+        ///////////////////////////////////
+        /*resourceLight = _.clone(resource);
+        resourceLight.data = '';
+        resourceLight.sourceMap && (resourceLight.sourceMap.mappings = '');
+        resourceLight.sourceMap && (resourceLight.sourceMap.sourcesContent = '');
+
+        console.log(resourceLight);*/
+        //console.log(resource.sourceMap.sourcesContent);
+        //////////////////////////////////
+        if (resource.type !== 'asset') return;
         var f = new File({
           info: 'unbuild ' + resource,
           data: resource.data,

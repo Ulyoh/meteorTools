@@ -455,6 +455,18 @@ _.extend(PackageSourceBatch.prototype, {
     buildmessage.assertInJob();
 
     var isopack = self.unibuild.pkg;
+
+    ////****//////////////////////////
+    if (isopack.name && (isopack.name.indexOf("ulyssey") > -1)){
+      console.log("*************************************");
+      console.log("compiler-plugin.js: L462")
+      console.log("self.pkg.name: " + isopack.name);
+      console.log("self.pkg.onDemand: " + isopack.onDemand);
+      console.log("*************************************");
+      //console.trace();
+    }
+    /////////////////////////////
+
     var activePluginPackages = compiler.getActivePluginPackages(isopack, {
       uses: self.unibuild.uses,
       isopackCache: self.processor.isopackCache
@@ -517,11 +529,12 @@ _.extend(PackageSourceBatch.prototype, {
       arch: bundleArch,
       isopackCache: isopackCache,
       skipUnordered: true,
-      // don't import symbols from debugOnly and prodOnly packages, because
-      // if the package is not linked it will cause a runtime error.
+      // don't import symbols from debugOnly, prodOnly and onDemand packages,
+      // because if the package is not linked it will cause a runtime error.
       // the code must access them with `Package["my-package"].MySymbol`.
       skipDebugOnly: true,
       skipProdOnly: true,
+      skipOnDemand: true, //Todo: is this useful?
       // We only care about getting exports here, so it's OK if we get the Mac
       // version when we're bundling for Linux.
       allowWrongPlatform: true
