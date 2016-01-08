@@ -278,17 +278,6 @@ _.extend(LocalCatalog.prototype, {
         // in which we loaded local package dirs when running this function.)
         if (_.has(self.packages, name)) return;
 
-        //////////////////////////////
-        if (name.indexOf("ulyssey") > -1){
-          console.log("*************************************");
-          console.log("catalog-local.js: L284")
-          console.log("name: " + name);
-          console.log("packageSource.onDemand: " + packageSource.onDemand);
-          console.log("*************************************");
-          //console.trace();
-        }
-        /////////////////////////////
-
         self.packages[name] = {
           packageSource: packageSource,
           packageRecord: {

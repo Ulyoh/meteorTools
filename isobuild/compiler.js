@@ -830,15 +830,7 @@ compiler.eachUsedUnibuild = function (options, callback) {
     if (usedPackage.debugOnly && options.skipDebugOnly) continue;
     // Ditto prodOnly.
     if (usedPackage.prodOnly && options.skipProdOnly) continue;
-    // Ditto onDemand. //todo is this test necesary?
-    /////*****//////////////////
-    if (usedPackage.onDemand){
-
-      console.log("usedPackage.onDemand: " + usedPackage.onDemand);
-      console.log("options.skipOnDemand: " + options.skipOnDemand);
-    }
-    /////////////////////////////////
-
+    // Ditto onDemand. //todo: is options.skipOnDemand necesary?
     if (usedPackage.onDemand && options.skipOnDemand) continue;
 
     var unibuild = usedPackage.getUnibuildAtArch(arch, { allowWrongPlatform: allowWrongPlatform });

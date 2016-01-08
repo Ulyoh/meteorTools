@@ -38,17 +38,6 @@ var Unibuild = function (isopack, options) {
   options = options || {};
   self.pkg = isopack;
 
-  ////****//////////////////////////
-  if (self.pkg.name && (self.pkg.name.indexOf("ulyssey") > -1)){
-    console.log("*************************************");
-    console.log("package-source.js: L44")
-    console.log("self.pkg.name: " + self.pkg.name);
-    console.log("self.pkg.onDemand: " + self.pkg.onDemand);
-    console.log("*************************************");
-    //console.trace();
-  }
-  /////////////////////////////
-
   self.kind = options.kind;
   self.arch = options.arch;
 
@@ -338,18 +327,6 @@ _.extend(Isopack.prototype, {
     self.onDemand = options.onDemand;
     self.pluginCacheDir = options.pluginCacheDir || null;
     self.isobuildFeatures = options.isobuildFeatures;
-
-    //////////////////////////////
-    if (self.name && (self.name.indexOf("ulyssey") > -1)){
-      console.log("*************************************");
-      console.log("isopack.js: L334")
-      console.log("self.name: " + self.name);
-      console.log("self.onDemand: " + self.onDemand);
-      console.log("*************************************");
-      //console.trace();
-    }
-    /////////////////////////////
-
   },
 
   // Programmatically add a unibuild to this Isopack. Should only be
@@ -910,16 +887,6 @@ _.extend(Isopack.prototype, {
       self.pluginWatchSet = watch.WatchSet.fromJSON(options.isopackBuildInfoJson.pluginDependencies);
     }
 
-    //////////////////////////////
-    if (mainJson.name && (mainJson.name.indexOf("ulyssey") > -1)){
-      console.log("*************************************");
-      console.log("isopack.js: initFromOptions L916")
-      console.log("mainJson.name: " + mainJson.name);
-      console.log("mainJson.onDemand: " + mainJson.onDemand);
-      console.log("*************************************");
-      //console.trace();
-    }
-    /////////////////////////////
     // If we are loading multiple isopacks, only take this stuff from the
     // first one.
     if (options.firstIsopack) {
@@ -933,16 +900,6 @@ _.extend(Isopack.prototype, {
       self.prodOnly = !!mainJson.prodOnly;
       self.onDemand = !!mainJson.onDemand;
     }
-    //////////////////////////////
-    if (self.name.indexOf("ulyssey") > -1){
-      console.log("*************************************");
-      console.log("isopack.js: initFromOptions L939")
-      console.log("self.name: " + self.name);
-      console.log("self.onDemand: " + self.onDemand);
-      console.log("*************************************");
-      //console.trace();
-    }
-    /////////////////////////////
     _.each(mainJson.plugins, function (pluginMeta) {
       rejectBadPath(pluginMeta.path);
 
@@ -1180,30 +1137,9 @@ _.extend(Isopack.prototype, {
         if (self.prodOnly) {
           mainJson.prodOnly = true;
         }
-        //////////////////////////////
-        if (self.name && (self.name.indexOf("ulyssey") > -1)){
-          console.log("***************************************************************************");
-          console.log("isopack.js: L1175")
-          console.log("self.name: " + self.name);
-          console.log("self.onDemand: " + self.onDemand);
-          console.log("*************************************");
-          //console.trace();
-        }
-        /////////////////////////////
         if (self.onDemand) {
-          console.log("***************************************************************************");
           mainJson.onDemand = true;
         }
-        //////////////////////////////
-        if (self.name && (self.name.indexOf("ulyssey") > -1)){
-          console.log("***************************************************************************");
-          console.log("isopack.js: L1188")
-          console.log("self.name: " + mainJson.name);
-          console.log("self.onDemand: " + mainJson.onDemand);
-          console.log("*************************************");
-          //console.trace();
-        }
-        /////////////////////////////
         if (!_.isEmpty(self.cordovaDependencies)) {
           mainJson.cordovaDependencies = self.cordovaDependencies;
         }
@@ -1563,21 +1499,6 @@ _.extend(Isopack.prototype, {
 
         isopackJson = {};
 
-        ///****///////////////////////////////
-        /*if((unibuild.pkg) &&
-          unibuild.pkg.name &&
-          (unibuild.pkg.name.indexOf("ulyssey")> -1 )){
-          console.log("****      ****        ****     ****")
-          console.log("isopack.js L1278");
-          console.log(unibuild);
-        }*/
-        if(mainJson.name.indexOf("ulyssey") > -1){
-          console.log("****      ****        ****     ****");
-          console.log("isopack.js L1574");
-          console.log(mainJson);
-        }
-        ///*****///////////////////////////////*/
-
         isopackJson['isopack-2'] = mainJson;
         if (writeLegacyBuilds) {
           isopackJson['isopack-1'] = mainLegacyJson;
@@ -1593,11 +1514,6 @@ _.extend(Isopack.prototype, {
         //   isopack-2: {... data ...}
         // }
         builder.writeJson("isopack.json", isopackJson);
-        if (isopackJson['isopack-2'] && isopackJson['isopack-2'].name &&
-          isopackJson['isopack-2'].name.indexOf('ulyssey') > -1) {
-            console.log("++++++++++++++5555555555555++++++++++++++");
-            console.log(isopackJson['isopack-2'].name);
-        }
 
         if (isopackBuildInfoJson) {
           builder.writeJson("isopack-buildinfo.json", isopackBuildInfoJson);

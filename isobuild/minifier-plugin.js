@@ -103,8 +103,8 @@ var JsFile = (function (_InputFile) {
       data: options.data,
       sourceMap: options.sourceMap,
       path: options.path,
-      onDemand: self._source.onDemand
-  });
+      onDemand: self.getOnDemand()
+    });
   };
 
   return JsFile;
@@ -132,7 +132,7 @@ var CssFile = (function (_InputFile2) {
       data: options.data,
       sourceMap: options.sourceMap,
       path: options.path,
-      onDemand: self._source.onDemand
+      onDemand: self.getOnDemand()
     });
   };
 

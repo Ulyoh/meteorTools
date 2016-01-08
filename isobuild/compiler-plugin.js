@@ -455,18 +455,6 @@ _.extend(PackageSourceBatch.prototype, {
     buildmessage.assertInJob();
 
     var isopack = self.unibuild.pkg;
-
-    ////****//////////////////////////
-    if (isopack.name && (isopack.name.indexOf("ulyssey") > -1)){
-      console.log("*************************************");
-      console.log("compiler-plugin.js: L462")
-      console.log("self.pkg.name: " + isopack.name);
-      console.log("self.pkg.onDemand: " + isopack.onDemand);
-      console.log("*************************************");
-      //console.trace();
-    }
-    /////////////////////////////
-
     var activePluginPackages = compiler.getActivePluginPackages(isopack, {
       uses: self.unibuild.uses,
       isopackCache: self.processor.isopackCache

@@ -191,18 +191,6 @@ var getExcerptFromReadme = function (text) {
 var SourceArch = function (pkg, options) {
   var self = this;
   options = options || {};
-
-  ////****//////////////////////////
-  if (pkg.name && (pkg.name.indexOf("ulyssey") > -1)){
-    console.log("*************************************");
-    console.log("package-source.js: L196")
-    console.log("self.name: " + pkg.name);
-    console.log("self.onDemand: " + pkg.onDemand);
-    console.log("*************************************");
-    //console.trace();
-  }
-  /////////////////////////////
-
   self.pkg = pkg;
 
   // Kind of this sourceArchitecture. At the moment, there are really three
@@ -442,17 +430,6 @@ _.extend(PackageSource.prototype, {
       return source;
     });
 
-    ////****//////////////////////////
-    if (self.name && (self.name.indexOf("ulyssey") > -1)){
-      console.log("*************************************");
-      console.log("package-source.js: L448")
-      console.log("self.name: " + self.name);
-      console.log("self.onDemand: " + self.onDemand);
-      console.log("*************************************");
-      //console.trace();
-    }
-    /////////////////////////////
-
     var sourceArch = new SourceArch(self, {
       kind: options.kind,
       arch: "os",
@@ -463,8 +440,6 @@ _.extend(PackageSource.prototype, {
         };
       }
     });
-
-
 
     self.architectures.push(sourceArch);
 
@@ -648,29 +623,19 @@ _.extend(PackageSource.prototype, {
             // * We should consider publicly documenting these flags, since they
             //   are effectively part of the public API.
           } else if (key === "debugOnly") {
-              self.debugOnly = !!value;
+            self.debugOnly = !!value;
           } else if (key === "prodOnly") {
             self.prodOnly = !!value;
           } else if (key === "onDemand") {
             self.onDemand = !!value;
           } else {
-              // Do nothing. We might want to add some keys later, and we should err
-              // on the side of backwards compatibility.
-            }
+            // Do nothing. We might want to add some keys later, and we should err
+            // on the side of backwards compatibility.
+          }
           if (self.debugOnly && self.prodOnly) {
             buildmessage.error("Package can't have both debugOnly and prodOnly set.");
           }
         });
-        ////****//////////////////////////
-        if (self.name.indexOf("ulyssey") > -1){
-          console.log("*************************************");
-          console.log("package-source.js: L642")
-          console.log("self.name: " + self.name);
-          console.log("self.onDemand: " + self.onDemand);
-          console.log("*************************************");
-          //console.trace();
-        }
-        /////////////////////////////
       },
 
       /**
@@ -1193,17 +1158,6 @@ _.extend(PackageSource.prototype, {
       var watchSet = new watch.WatchSet();
       watchSet.addFile(packageJsPath, packageJsHash);
 
-      ////****//////////////////////////
-      if (self.name && (self.name.indexOf("ulyssey") > -1)){
-        console.log("*************************************");
-        console.log("package-source.js: L1199")
-        console.log("self.name: " + self.name);
-        console.log("self.onDemand: " + self.onDemand);
-        console.log("*************************************");
-        //console.trace();
-      }
-      /////////////////////////////
-
       self.architectures.push(new SourceArch(self, {
         kind: "main",
         arch: arch,
@@ -1257,16 +1211,6 @@ _.extend(PackageSource.prototype, {
       // XXX what about /web.browser/* etc, these directories could also
       // be for specific client targets.
 
-      ////****//////////////////////////
-      if (self.name && (self.name.indexOf("ulyssey") > -1)){
-        console.log("*************************************");
-        console.log("package-source.js: L1263")
-        console.log("self.name: " + self.name);
-        console.log("self.onDemand: " + self.onDemand);
-        console.log("*************************************");
-        //console.trace();
-      }
-      /////////////////////////////
       // Create unibuild
       var sourceArch = new SourceArch(self, {
         kind: 'app',
