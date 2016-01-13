@@ -611,7 +611,7 @@ var Target = (function () {
           isopackCache: isopackCache,
           skipDebugOnly: this.buildMode !== 'development',
           skipProdOnly: this.buildMode !== 'production',
-          skipOnDemand: false, //Todo: is this useful? if true: corresponding packages do not appear in the app's build folder
+          skipOnDemand: false, //if true: corresponding packages do not appear in the app's build folder
           allowWrongPlatform: this.providePackageJSONForUnavailableBinaryDeps
         }, addToGetsUsed);
       }).bind(_this2);
@@ -673,7 +673,7 @@ var Target = (function () {
           acceptableWeakPackages: this.usedPackages,
           skipDebugOnly: this.buildMode !== 'development',
           skipProdOnly: this.buildMode !== 'production',
-          skipOnDemand: false, //Todo: is this useful?
+          skipOnDemand: false,
           allowWrongPlatform: this.providePackageJSONForUnavailableBinaryDeps
         }, processUnibuild);
         this.unibuilds.push(unibuild);

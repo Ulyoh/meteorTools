@@ -522,7 +522,7 @@ _.extend(PackageSourceBatch.prototype, {
       // the code must access them with `Package["my-package"].MySymbol`.
       skipDebugOnly: true,
       skipProdOnly: true,
-      skipOnDemand: false, //Todo: is this useful?
+      skipOnDemand: true,
       // We only care about getting exports here, so it's OK if we get the Mac
       // version when we're bundling for Linux.
       allowWrongPlatform: true
