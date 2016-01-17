@@ -1,0 +1,1 @@
+/home/yoh/.meteor/packages/boilerplate-generator/1.0.4/os/boilerplate-generator.js
