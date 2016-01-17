@@ -61,6 +61,10 @@ Boilerplate.prototype._generateBoilerplateFromManifestAndSource =
     _.extend(boilerplateBaseData, options.baseDataExtension);
 
     _.each(manifest, function (item) {
+      //do not include package with onDemand tag = true
+      if( item.onDemand === true ) {
+        return;
+      }
       var urlPath = urlMapper(item.url);
       var itemObj = { url: urlPath };
 
