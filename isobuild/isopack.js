@@ -123,6 +123,7 @@ var Isopack = function () {
   self.isTest = false;
   self.debugOnly = false;
   self.prodOnly = false;
+  self.onDemand = false;
 
   // Unibuilds, an array of class Unibuild.
   self.unibuilds = [];
@@ -323,6 +324,7 @@ _.extend(Isopack.prototype, {
     self.includeTool = options.includeTool;
     self.debugOnly = options.debugOnly;
     self.prodOnly = options.prodOnly;
+    self.onDemand = options.onDemand;
     self.pluginCacheDir = options.pluginCacheDir || null;
     self.isobuildFeatures = options.isobuildFeatures;
   },
@@ -896,6 +898,7 @@ _.extend(Isopack.prototype, {
       self.isTest = mainJson.isTest;
       self.debugOnly = !!mainJson.debugOnly;
       self.prodOnly = !!mainJson.prodOnly;
+      self.onDemand = !!mainJson.onDemand;
     }
     _.each(mainJson.plugins, function (pluginMeta) {
       rejectBadPath(pluginMeta.path);
@@ -1133,6 +1136,9 @@ _.extend(Isopack.prototype, {
         }
         if (self.prodOnly) {
           mainJson.prodOnly = true;
+        }
+        if (self.onDemand) {
+          mainJson.onDemand = true;
         }
         if (!_.isEmpty(self.cordovaDependencies)) {
           mainJson.cordovaDependencies = self.cordovaDependencies;

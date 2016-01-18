@@ -246,9 +246,9 @@ var startLoad = function (fileInfo) {
 
 Fiber(function () {
   _.each(serverJson.load, function(fileInfo){
-    if (!fileInfo.onDemand){
+    //if (!fileInfo.onDemand){
       startLoad(fileInfo);
-    }
+    //}
   });
 
   // run the user startup hooks.  other calls to startup() during this can still

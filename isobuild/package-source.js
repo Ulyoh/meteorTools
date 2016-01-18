@@ -351,6 +351,9 @@ var PackageSource = function () {
   // builds.
   self.prodOnly = false;
 
+  //todo: comment
+  self.onDemand = false;
+
   // If this is set, we will take the currently running git checkout and bundle
   // the meteor tool from it inside this package as a tool. We will include
   // built copies of all known isopackets.
@@ -553,6 +556,9 @@ _.extend(PackageSource.prototype, {
        * meant to be used in development only.
        * @param {Boolean} options.prodOnly A package with this flag set to true
        * will ONLY be bundled into production builds.
+       * @param {Boolean} options.onDemand A package with this flag set to true
+       * will not be imported for you. You have to access it using:
+       * `Package["my-package"].MySymbol`
        */
       describe: function (options) {
         _.each(options, function (value, key) {
@@ -593,20 +599,20 @@ _.extend(PackageSource.prototype, {
               // the name that we find inside. That's super weird.
               buildmessage.error("trying to initialize a nonexistent base package " + value);
             }
-            // `debugOnly` and `prodOnly` are boolean flags you can put on a
-            // package, currently undocumented.  when set to true, they cause
-            // a package's code to be only included (i.e. linked into the bundle)
-            // in dev mode or prod mode (`meteor --production`), and excluded
-            // otherwise.
+            // `debugOnly`, `prodOnly` and `onDemand` are boolean flags you can
+            // put on apackage, currently undocumented.  when set to true, they
+            // cause a package's code to be only included (i.e. linked into the
+            // bundle)in dev mode or prod mode (`meteor --production`), and
+            // excluded otherwise.
             //
             // Notes:
             //
             // * These flags do not affect which packages or which versions are
             //   are selected by the version solver.
             //
-            // * When you use a debugOnly or prodOnly package, its exports are
-            //   not imported for you.  You have to access them using
-            //   `Package["my-package"].MySymbol`.
+            // * When you use a debugOnly or prodOnly or `onDemand` package, its
+            //   exports are not imported for you.  You have to access them
+            //   using `Package["my-package"].MySymbol`.
             //
             // * These flags CAN cause different package load orders in
             //   development and production!  We should probably fix this.
@@ -617,13 +623,15 @@ _.extend(PackageSource.prototype, {
             // * We should consider publicly documenting these flags, since they
             //   are effectively part of the public API.
           } else if (key === "debugOnly") {
-              self.debugOnly = !!value;
-            } else if (key === "prodOnly") {
-              self.prodOnly = !!value;
-            } else {
-              // Do nothing. We might want to add some keys later, and we should err
-              // on the side of backwards compatibility.
-            }
+            self.debugOnly = !!value;
+          } else if (key === "prodOnly") {
+            self.prodOnly = !!value;
+          } else if (key === "onDemand") {
+            self.onDemand = !!value;
+          } else {
+            // Do nothing. We might want to add some keys later, and we should err
+            // on the side of backwards compatibility.
+          }
           if (self.debugOnly && self.prodOnly) {
             buildmessage.error("Package can't have both debugOnly and prodOnly set.");
           }

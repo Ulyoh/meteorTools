@@ -225,6 +225,7 @@ var NodeModulesDirectory = function (options) {
 // - sourceMap: if 'data' is given, can be given instead of
 //   sourcePath. a string or a JS Object. Will be stored as Object.
 // - cacheable
+// - onDemand: true if Package.describe({'onDemand': true)
 
 var File = (function () {
   function File(options) {
@@ -260,6 +261,9 @@ var File = (function () {
     // Is this file guaranteed to never change, so that we can let it be
     // cached forever? Only makes sense of self.url is set.
     this.cacheable = options.cacheable || false;
+
+    //If the package is served on demand
+    this.onDemand = options.onDemand || false;
 
     // The node_modules directory that Npm.require() should search when
     // called from inside this file, given as a NodeModulesDirectory, or
@@ -607,6 +611,7 @@ var Target = (function () {
           isopackCache: isopackCache,
           skipDebugOnly: this.buildMode !== 'development',
           skipProdOnly: this.buildMode !== 'production',
+          skipOnDemand: false, //Todo: is this useful? if true: corresponding packages do not appear in the app's build folder
           allowWrongPlatform: this.providePackageJSONForUnavailableBinaryDeps
         }, addToGetsUsed);
       }).bind(_this2);
@@ -668,6 +673,7 @@ var Target = (function () {
           acceptableWeakPackages: this.usedPackages,
           skipDebugOnly: this.buildMode !== 'development',
           skipProdOnly: this.buildMode !== 'production',
+          skipOnDemand: false, //Todo: is this useful?
           allowWrongPlatform: this.providePackageJSONForUnavailableBinaryDeps
         }, processUnibuild);
         this.unibuilds.push(unibuild);
@@ -714,6 +720,7 @@ var Target = (function () {
     // Copy their resources into the bundle in order
     sourceBatches.forEach(function (sourceBatch) {
       var unibuild = sourceBatch.unibuild;
+      var onDemand = unibuild.pkg && unibuild.pkg.onDemand;
 
       if (_this3.cordovaDependencies) {
         _.each(unibuild.pkg.cordovaDependencies, function (version, name) {
@@ -738,7 +745,8 @@ var Target = (function () {
           info: 'unbuild ' + resource,
           data: resource.data,
           cacheable: false,
-          hash: resource.hash
+          hash: resource.hash,
+          onDemand: onDemand
         });
 
         var relPath = isOs ? files.pathJoin('assets', resource.servePath) : stripLeadingSlash(resource.servePath);
@@ -767,7 +775,12 @@ var Target = (function () {
             // meteor.js?
             return;
 
-          var f = new File({ info: 'resource ' + resource.servePath, data: resource.data, cacheable: false });
+          var f = new File({
+            info: 'resource ' + resource.servePath,
+            data: resource.data,
+            cacheable: false,
+            onDemand: onDemand
+          });
 
           var relPath = stripLeadingSlash(resource.servePath);
           f.setTargetPathFromRelPath(relPath);
@@ -876,7 +889,8 @@ var Target = (function () {
       return source._minifiedFiles.map(function (file) {
         var newFile = new File({
           info: 'minified js',
-          data: new Buffer(file.data, 'utf8')
+          data: new Buffer(file.data, 'utf8'),
+          onDemand: file.onDemand
         });
         if (file.sourceMap) {
           newFile.setSourceMap(file.sourceMap, '/');
@@ -1058,7 +1072,8 @@ var ClientTarget = (function (_Target) {
       return source._minifiedFiles.map(function (file) {
         var newFile = new File({
           info: 'minified css',
-          data: new Buffer(file.data, 'utf8')
+          data: new Buffer(file.data, 'utf8'),
+          onDemand: file.onDemand
         });
         if (file.sourceMap) {
           newFile.setSourceMap(file.sourceMap, '/');
@@ -1118,6 +1133,7 @@ var ClientTarget = (function (_Target) {
         where: "client",
         type: type,
         cacheable: file.cacheable,
+        onDemand: file.onDemand,
         url: file.url
       };
 
@@ -1467,6 +1483,8 @@ var JsImage = (function () {
 
       loadItem.path = builder.writeToGeneratedFilename(item.targetPath, { data: new Buffer(item.source, 'utf8') });
 
+      loadItem.onDemand = !!item.onDemand;
+
       if (!_.isEmpty(item.assets)) {
         // For package code, static assets go inside a directory inside
         // assets/packages specific to this package. Application assets (e.g. those
@@ -1636,7 +1654,8 @@ var JsImageTarget = (function (_Target2) {
         nodeModulesDirectory: file.nodeModulesDirectory,
         assets: file.assets,
         sourceMap: file.sourceMap,
-        sourceMapRoot: file.sourceMapRoot
+        sourceMapRoot: file.sourceMapRoot,
+        onDemand: file.onDemand //todo verify if usefull here
       });
     });
 

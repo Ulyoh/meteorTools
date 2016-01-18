@@ -36,6 +36,10 @@ var InputFile = (function (_buildPluginModule$InputFile) {
     return this._source.hash();
   };
 
+  InputFile.prototype.getOnDemand = function getOnDemand() {
+    return !!this._source.onDemand;
+  };
+
   InputFile.prototype.getArch = function getArch() {
     return this._arch;
   };
@@ -98,7 +102,8 @@ var JsFile = (function (_InputFile) {
     self._minifiedFiles.push({
       data: options.data,
       sourceMap: options.sourceMap,
-      path: options.path
+      path: options.path,
+      onDemand: self.getOnDemand()
     });
   };
 
@@ -122,10 +127,12 @@ var CssFile = (function (_InputFile2) {
   // - hash?
 
   CssFile.prototype.addStylesheet = function addStylesheet(options) {
-    this._minifiedFiles.push({
+    var self = this;
+    self._minifiedFiles.push({
       data: options.data,
       sourceMap: options.sourceMap,
-      path: options.path
+      path: options.path,
+      onDemand: self.getOnDemand()
     });
   };
 
